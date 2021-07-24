@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FakeXieCheng.API.Dtos;
+using FakeXieCheng.API.Models;
 using FakeXieCheng.API.ResourceParameters;
 using FakeXieCheng.API.Services;
 using Microsoft.AspNetCore.Http;
@@ -30,7 +31,7 @@ namespace FakeXieCheng.API.Controllers
         public IActionResult GetTouristRoutes(
             [FromForm] TouristRouteResourceParameters parameters
         )
-        {          
+        {
             var touristRoutesFromRepo = _touristRouteRepostitory.GetTouristRoutes(parameters.Keyword, parameters.RatingOperator, parameters.RatingValue);
             if (touristRoutesFromRepo == null || touristRoutesFromRepo.Count() <= 0)
             {
@@ -40,8 +41,8 @@ namespace FakeXieCheng.API.Controllers
             return Ok(touristRoutesDto);
         }
 
-        [HttpGet("{touristRouteId:Guid}")]
-        //[HttpGet("{touristRouteId}")]
+        //[HttpGet("{touristRouteId:Guid}")]
+        [HttpGet("{touristRouteId}", Name = "GetTouristRouteById")]
         public IActionResult GetTouristRouteById(Guid touristRouteId)
         {
             var touristRouteFromRepo = _touristRouteRepostitory.GetTouristRoute(touristRouteId);
@@ -53,5 +54,17 @@ namespace FakeXieCheng.API.Controllers
 
             return Ok(touristRouteDto);
         }
+
+        [HttpPost]
+        public IActionResult CreateTouristRoute([FromBody] TouristRouteForCreationDto touristRouteForCreationDto)
+        {
+            var touristRouteModel = _mapper.Map<TouristRoute>(touristRouteForCreationDto);
+            _touristRouteRepostitory.AddTouristRoute(touristRouteModel);
+            _touristRouteRepostitory.Save();
+            var touristRouteToReturn = _mapper.Map<TouristRouteDto>(touristRouteModel);
+            // 响应的Headers里Location
+            return CreatedAtRoute("GetTouristRouteById", new { touristRouteById = touristRouteToReturn.Id }, touristRouteToReturn);
+        }
+
     }
 }
