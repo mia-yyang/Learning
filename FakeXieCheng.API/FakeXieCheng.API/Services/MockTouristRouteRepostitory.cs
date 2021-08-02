@@ -6,53 +6,83 @@ using System.Threading.Tasks;
 
 namespace FakeXieCheng.API.Services
 {
-    //public class MockTouristRouteRepostitory : ITouristRouteRepostitory
-    //{
-    //    private List<TouristRoute> _routes;
+    public class MockTouristRouteRepostitory : ITouristRouteRepostitory
+    {
+        private List<TouristRoute> _routes;
 
-    //    public MockTouristRouteRepostitory()
-    //    {
-    //        if (_routes == null)
-    //        {
-    //            InitializeTouristRoutes();
-    //        }
-    //    }
+        public MockTouristRouteRepostitory()
+        {
+            if (_routes == null)
+            {
+                InitializeTouristRoutes();
+            }
+        }
 
-    //    private void InitializeTouristRoutes()
-    //    {
-    //        _routes = new List<TouristRoute>
-    //        {
-    //            new TouristRoute()
-    //            {
-    //                Id = Guid.NewGuid(),
-    //                Title = "黄山",
-    //                Description = "黄山真好玩",
-    //                OriginalPrice = 1299,
-    //                Features = "<p>吃住行游购娱</p>",
-    //                Fees = "<p>交通费用自理</p>",
-    //                Notes = "<p>小心危险</p>"
-    //            },
-    //            new TouristRoute()
-    //            {
-    //                Id = Guid.NewGuid(),
-    //                Title = "华山",
-    //                Description = "华山真好玩",
-    //                OriginalPrice = 1399,
-    //                Features = "<p>吃住行游购娱</p>",
-    //                Fees = "<p>交通费用自理</p>",
-    //                Notes = "<p>小心危险</p>"
-    //            }
-    //        };
+        private void InitializeTouristRoutes()
+        {
+            _routes = new List<TouristRoute>
+            {
+                new TouristRoute()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "黄山",
+                    Description = "黄山真好玩",
+                    OriginalPrice = 1299,
+                    Features = "<p>吃住行游购娱</p>",
+                    Fees = "<p>交通费用自理</p>",
+                    Notes = "<p>小心危险</p>"
+                },
+                new TouristRoute()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "华山",
+                    Description = "华山真好玩",
+                    OriginalPrice = 1399,
+                    Features = "<p>吃住行游购娱</p>",
+                    Fees = "<p>交通费用自理</p>",
+                    Notes = "<p>小心危险</p>"
+                }
+            };
 
-    //    }
-    //    public IEnumerable<TouristRoute> GetTouristRoutes()
-    //    {
-    //        return _routes;
-    //    }
+        }
+        public IEnumerable<TouristRoute> GetTouristRoutes()
+        {
+            return _routes;
+        }
 
-    //    public TouristRoute GetTouristRoute(Guid touristRouteId)
-    //    {
-    //        return _routes.FirstOrDefault(n => n.Id == touristRouteId);
-    //    }
-    //}
+        public TouristRoute GetTouristRoute(Guid touristRouteId)
+        {
+            return _routes.FirstOrDefault(n => n.Id == touristRouteId);
+        }
+
+        public IEnumerable<TouristRoute> GetTouristRoutes(string keyword, string operatorType, int? ratingValue)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool TouristRouteExists(Guid touristRouteId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<TouristRoutePicture> GetPicturesByTouristRouteId(Guid touristRouteId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TouristRoutePicture GetPicture(int pictureId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddTouristRoute(TouristRoute touristRoute)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Save()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

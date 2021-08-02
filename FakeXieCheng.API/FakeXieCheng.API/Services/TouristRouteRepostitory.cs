@@ -86,5 +86,10 @@ namespace FakeXieCheng.API.Services
         {
             return (_context.SaveChanges() >= 0);
         }
+
+        public IEnumerable<TouristRoute> GetTouristRoutes(string keyword, string operatorType, int? ratingValue)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
