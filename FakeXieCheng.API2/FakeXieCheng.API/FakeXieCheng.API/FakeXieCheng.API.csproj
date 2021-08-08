@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\DepartureCity.cs" />
     <Compile Include="Models\TouristRoute.cs" />
     <Compile Include="Models\TouristRoutePicture.cs" />
