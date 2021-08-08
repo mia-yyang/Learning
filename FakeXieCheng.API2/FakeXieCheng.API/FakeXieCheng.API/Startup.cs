@@ -3,6 +3,7 @@ using FakeXieCheng.API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -49,6 +50,7 @@ namespace FakeXieCheng.API
                         ValidAudience = Configuration["Authentication:Audience"],
 
                         ValidateLifetime = true,
+
                         IssuerSigningKey = new SymmetricSecurityKey(secretByte)
                     };
                 });
@@ -59,15 +61,36 @@ namespace FakeXieCheng.API
             })
             .AddNewtonsoftJson(setupAction =>
             {
-                setupAction.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                setupAction.SerializerSettings.ContractResolver =
+                    new CamelCasePropertyNamesContractResolver();
             })
-            .AddXmlDataContractSerializerFormatters();
+            .AddXmlDataContractSerializerFormatters()
+            .ConfigureApiBehaviorOptions(setupAction =>
+            {
+                setupAction.InvalidModelStateResponseFactory = context =>
+                {
+                    var problemDetail = new ValidationProblemDetails(context.ModelState)
+                    {
+                        Type = "无所谓",
+                        Title = "数据验证失败",
+                        Status = StatusCodes.Status422UnprocessableEntity,
+                        Detail = "请看详细说明",
+                        Instance = context.HttpContext.Request.Path
+                    };
+                    problemDetail.Extensions.Add("traceId", context.HttpContext.TraceIdentifier);
+                    return new UnprocessableEntityObjectResult(problemDetail)
+                    {
+                        ContentTypes = { "application/problem+json" }
+                    };
+                };
+            });
 
             services.AddTransient<ITouristRouteRepostitory, TouristRouteRepostitory>();
 
             services.AddDbContextPool<AppDbContext>(options => options
                .UseMySql("Server=101.132.195.18;Initial Catalog=FakeXieChengDb;uid=root;pwd=123456;", new MySqlServerVersion(new Version(8, 0, 25))));
 
+            // 扫描 profile 文件
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 

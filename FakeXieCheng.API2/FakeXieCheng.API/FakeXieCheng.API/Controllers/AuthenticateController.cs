@@ -20,35 +20,57 @@ namespace FakeXieCheng.API.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
         public AuthenticateController(
             IConfiguration configuration,
-            UserManager<IdentityUser> userManager
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager
         )
         {
             _configuration = configuration;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginDto loginDto)
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
             // 1.验证用户名密码
+            var loginResult = await _signInManager.PasswordSignInAsync(
+                loginDto.Email,
+                loginDto.Password,
+                false,
+                false
+            );
+            if (!loginResult.Succeeded)
+            {
+                return BadRequest();
+            }
+
+            var user = await _userManager.FindByNameAsync(loginDto.Email);
 
             // 2.创建jwt
             // header
             var signingAlgorithm = SecurityAlgorithms.HmacSha256;
             // payload
-            var claims = new[]
+            var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, "fake_user_id"),
-                new Claim (ClaimTypes.Role,"Admin")
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+                // new Claim (ClaimTypes.Role,"Admin")
             };
+            var roleNames = await _userManager.GetRolesAsync(user);
+            foreach (var roleName in roleNames)
+            {
+                var roleClaim = new Claim(ClaimTypes.Role, roleName);
+                claims.Add(roleClaim);
+            }
+
             // signiture
             var secretByte = Encoding.UTF8.GetBytes(_configuration["Authentication:SecretKey"]);
             var signingKey = new SymmetricSecurityKey(secretByte);
             var signingCredentials = new SigningCredentials(signingKey, signingAlgorithm);
-            // 3.return 200 ok+jwt
+
             var token = new JwtSecurityToken(
                 issuer: _configuration["Authentication:Issuer"],
                 audience: _configuration["Authentication:Audience"],
@@ -60,6 +82,7 @@ namespace FakeXieCheng.API.Controllers
 
             var tokenStr = new JwtSecurityTokenHandler().WriteToken(token);
 
+            // 3.return 200 ok+jwt
             return Ok(tokenStr);
         }
 
