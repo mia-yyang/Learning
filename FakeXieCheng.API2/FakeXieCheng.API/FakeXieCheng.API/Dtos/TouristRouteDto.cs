@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 
 namespace FakeXieCheng.API.Dtos
 {
-    public class TouristRouteForCreationDto
+    public class TouristRouteDto
     {
+        public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
+        public double? DiscountPresent { get; set; }
         public DateTime CreateTime { get; set; }
         public DateTime? UpdateTime { get; set; }
         public DateTime? DepartureTime { get; set; }
@@ -20,5 +22,6 @@ namespace FakeXieCheng.API.Dtos
         public string TravelDays { get; set; }
         public string TripType { get; set; }
         public string DepartureCity { get; set; }
+        public ICollection<TouristRoutePictureDto> TouristRoutePictures { get; set; }
     }
 }

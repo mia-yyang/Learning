@@ -10,7 +10,7 @@ namespace FakeXieCheng.API.ResourceParameters
     {
         public string Keyword { get; set; }
         public string RatingOperator { get; set; }
-        public int? RatingValue { get; set; }
+        public int RatingValue { get; set; }
         private string _rating { get; set; }
         public string Rating
         {

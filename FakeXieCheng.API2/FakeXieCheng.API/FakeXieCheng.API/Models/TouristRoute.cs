@@ -33,5 +33,9 @@ namespace FakeXieCheng.API.Models
         public ICollection<TouristRoutePicture> TouristRoutePictures { get; set; }
             = new List<TouristRoutePicture>();
         public double? Rating { get; set; }
+        //public TraveDays? TraveDays { get; set; }
+        //public TripType? TripType { get; set; }
+        //public DepartureCity? DepartureCity { get; set; }
+
     }
 }

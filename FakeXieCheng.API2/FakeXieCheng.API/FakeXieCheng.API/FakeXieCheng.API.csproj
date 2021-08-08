@@ -12,16 +12,29 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Models\DepartureCity.cs" />
     <Compile Include="Models\TouristRoute.cs" />
     <Compile Include="Models\TouristRoutePicture.cs" />
+    <Compile Include="Models\TraveDays.cs" />
+    <Compile Include="Models\TripType.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="5.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="Profiles\" />
+    <Folder Include="ResourceParameters\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

@@ -15,6 +15,10 @@ namespace FakeXieCheng.API.Services
         {
             _context = context;
         }
+        public bool Save()
+        {
+            return (_context.SaveChanges() >= 0);
+        }
 
         public IEnumerable<TouristRoute> GetTouristRoutes(
             string keyword,
@@ -71,6 +75,11 @@ namespace FakeXieCheng.API.Services
             return _context.TouristRoutePictures.Where(p => p.Id == pictureId).FirstOrDefault();
         }
 
+        public IEnumerable<TouristRoute> GetTouristRoutesByIDList(IEnumerable<Guid> ids)
+        {
+            return _context.TouristRoutes.Where(t => ids.Contains(t.Id)).ToList();
+        }
+
         public void AddTouristRoute(TouristRoute touristRoute)
         {
             if (touristRoute == null)
@@ -79,17 +88,33 @@ namespace FakeXieCheng.API.Services
             }
 
             _context.TouristRoutes.Add(touristRoute);
-
+        }
+        public void AddTouristRoutePicture(Guid touristRouteId, TouristRoutePicture touristRoutePicture)
+        {
+            if (touristRouteId == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(touristRouteId));
+            }
+            if (touristRoutePicture == null)
+            {
+                throw new ArgumentNullException(nameof(touristRoutePicture));
+            }
+            touristRoutePicture.TouristRouteId = touristRouteId;
+            _context.TouristRoutePictures.Add(touristRoutePicture);
         }
 
-        public bool Save()
+        public void DeleteTouristRoute(TouristRoute touristRoute)
         {
-            return (_context.SaveChanges() >= 0);
+            _context.TouristRoutes.Remove(touristRoute);
+        }
+        public void DeleteTouristRoutes(IEnumerable<TouristRoute> touristRoutes)
+        {
+            _context.TouristRoutes.RemoveRange(touristRoutes);
         }
 
-        public IEnumerable<TouristRoute> GetTouristRoutes(string keyword, string operatorType, int? ratingValue)
+        public void DeleteTouristRoutePicture(TouristRoutePicture touristRoutePicture)
         {
-            throw new NotImplementedException();
+            _context.TouristRoutePictures.Remove(touristRoutePicture);
         }
     }
 }
