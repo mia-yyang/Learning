@@ -133,5 +133,36 @@ namespace FakeXieCheng.API.Services
         {
             await _context.ShoppingCarts.AddAsync(shoppingCart);
         }
+
+        public async Task AddShoppingCartItem(LineItem lineItem)
+        {
+            await _context.LineItems.AddAsync(lineItem);
+        }
+
+        public async Task<LineItem> GetShoppingCartItemByUserId(int lineItemId)
+        {
+            return await _context.LineItems
+              .Where(s => s.Id == lineItemId)
+              .FirstOrDefaultAsync();
+        }
+
+        public void DeleteShoppingCartItem(LineItem lineItem)
+        {
+            _context.LineItems.Remove(lineItem);
+        }
+
+        public async Task<IEnumerable<LineItem>> GetShoppingCartItemByIdListAsync(IEnumerable<int> ids)
+        {
+            return await _context.LineItems
+             .Where(s => ids.Contains(s.Id))
+             .ToListAsync();
+        }
+
+        public void DeleteShoppingCartItems(IEnumerable<LineItem> lineItems)
+        {
+            _context.LineItems.RemoveRange(lineItems);
+        }
+
+
     }
 }
