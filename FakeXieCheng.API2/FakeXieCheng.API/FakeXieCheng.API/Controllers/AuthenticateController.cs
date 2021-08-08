@@ -35,7 +35,8 @@ namespace FakeXieCheng.API.Controllers
             // payload
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, "fake_user_id")
+                new Claim(JwtRegisteredClaimNames.Sub, "fake_user_id"),
+                new Claim (ClaimTypes.Role,"Admin")
             };
             // signiture
             var secretByte = Encoding.UTF8.GetBytes(_configuration["Authentication:SecretKey"]);
