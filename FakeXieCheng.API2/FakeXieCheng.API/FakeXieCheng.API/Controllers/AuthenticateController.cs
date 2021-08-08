@@ -1,5 +1,6 @@
 ﻿using FakeXieCheng.API.Dtos;
 using FakeXieCheng.API.Models;
+using FakeXieCheng.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,15 +23,18 @@ namespace FakeXieCheng.API.Controllers
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private ITouristRouteRepostitory _touristRouteRepostitory;
         public AuthenticateController(
             IConfiguration configuration,
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager
+            SignInManager<ApplicationUser> signInManager,
+            ITouristRouteRepostitory touristRouteRepostitory
         )
         {
             _configuration = configuration;
             _userManager = userManager;
             _signInManager = signInManager;
+            _touristRouteRepostitory = touristRouteRepostitory;
         }
 
         [AllowAnonymous]
@@ -104,8 +108,16 @@ namespace FakeXieCheng.API.Controllers
             {
                 return BadRequest();
             }
+            // 3.初始化购物车
+            var shoppingCart = new ShoppingCart()
+            {
+                Id = Guid.NewGuid(),
+                UserId = user.Id
+            };
+            await _touristRouteRepostitory.CreateShoppingCart(shoppingCart);
+            await _touristRouteRepostitory.SaveAsync();
 
-            // 3.return
+            // 4.return
             return Ok();
         }
     }

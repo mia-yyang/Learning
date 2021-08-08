@@ -3,14 +3,16 @@ using System;
 using FakeXieCheng.API.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FakeXieCheng.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210808124117_ApplicationUserMigration")]
+    partial class ApplicationUserMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,63 +90,19 @@ namespace FakeXieCheng.API.Migrations
                         {
                             Id = "90184155-dee0-40c9-bb1e-b5ed07afc04e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "cb4ba0dd-e34b-40e5-a395-1f235e5abfa5",
+                            ConcurrencyStamp = "7d39670e-0032-4ad3-8070-2b8119c78a9d",
                             Email = "admin@fakexiecheng.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@FAKEXIECHENG.COM",
                             NormalizedUserName = "ADMIN@FAKEXIECHENG.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAELe4iHi+r1Thm0hjJoJVkmXyG3vHzzXeNhp0O2BoKCaUZbyJrcYcqHVpnEd9amTogA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHLtjUl1PJwX3McV2KMrKfiKXjIDqsWDbhuPWZS8c7IMgWh8kB37ZfDZ7lGVp8rUGQ==",
                             PhoneNumber = "123456789",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "dab3411a-ef55-4ee9-b116-6718e700f06c",
+                            SecurityStamp = "d1afce55-8e34-4fcc-a57c-0c1758758bbf",
                             TwoFactorEnabled = false,
                             UserName = "admin@fakexiecheng.com"
                         });
-                });
-
-            modelBuilder.Entity("FakeXieCheng.API.Models.LineItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<double?>("DiscountPresent")
-                        .HasColumnType("double");
-
-                    b.Property<decimal>("OriginalPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<Guid?>("ShoppingCartId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("TouristRouteId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ShoppingCartId");
-
-                    b.HasIndex("TouristRouteId");
-
-                    b.ToTable("LineItems");
-                });
-
-            modelBuilder.Entity("FakeXieCheng.API.Models.ShoppingCart", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("FakeXieCheng.API.Models.TouristRoute", b =>
@@ -244,7 +202,7 @@ namespace FakeXieCheng.API.Migrations
                         new
                         {
                             Id = "308660dc-ae51-480f-824d-7dca6714c3e2",
-                            ConcurrencyStamp = "50a454a7-bca8-4da3-9ad8-6aed7528fdce",
+                            ConcurrencyStamp = "44395dd4-d1cd-4210-9230-a1ff37263340",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -279,6 +237,9 @@ namespace FakeXieCheng.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<string>("ClaimType")
                         .HasColumnType("longtext");
 
@@ -290,6 +251,8 @@ namespace FakeXieCheng.API.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("UserId");
 
@@ -304,6 +267,9 @@ namespace FakeXieCheng.API.Migrations
                     b.Property<string>("ProviderKey")
                         .HasColumnType("varchar(255)");
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("longtext");
 
@@ -312,6 +278,8 @@ namespace FakeXieCheng.API.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("UserId");
 
@@ -356,36 +324,17 @@ namespace FakeXieCheng.API.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("varchar(255)");
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<string>("Value")
                         .HasColumnType("longtext");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
+                    b.HasIndex("ApplicationUserId");
+
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("FakeXieCheng.API.Models.LineItem", b =>
-                {
-                    b.HasOne("FakeXieCheng.API.Models.ShoppingCart", null)
-                        .WithMany("ShoppingCartItems")
-                        .HasForeignKey("ShoppingCartId");
-
-                    b.HasOne("FakeXieCheng.API.Models.TouristRoute", "TouristRoute")
-                        .WithMany()
-                        .HasForeignKey("TouristRouteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TouristRoute");
-                });
-
-            modelBuilder.Entity("FakeXieCheng.API.Models.ShoppingCart", b =>
-                {
-                    b.HasOne("FakeXieCheng.API.Models.ApplicationUser", "User")
-                        .WithOne("ShoppingCart")
-                        .HasForeignKey("FakeXieCheng.API.Models.ShoppingCart", "UserId");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FakeXieCheng.API.Models.TouristRoutePicture", b =>
@@ -411,6 +360,10 @@ namespace FakeXieCheng.API.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.HasOne("FakeXieCheng.API.Models.ApplicationUser", null)
+                        .WithMany("Claims")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("FakeXieCheng.API.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -419,6 +372,10 @@ namespace FakeXieCheng.API.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
+                    b.HasOne("FakeXieCheng.API.Models.ApplicationUser", null)
+                        .WithMany("Logins")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("FakeXieCheng.API.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -448,6 +405,10 @@ namespace FakeXieCheng.API.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.HasOne("FakeXieCheng.API.Models.ApplicationUser", null)
+                        .WithMany("Tokens")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("FakeXieCheng.API.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -456,14 +417,13 @@ namespace FakeXieCheng.API.Migrations
 
             modelBuilder.Entity("FakeXieCheng.API.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("ShoppingCart");
+                    b.Navigation("Claims");
+
+                    b.Navigation("Logins");
+
+                    b.Navigation("Tokens");
 
                     b.Navigation("UserRoles");
-                });
-
-            modelBuilder.Entity("FakeXieCheng.API.Models.ShoppingCart", b =>
-                {
-                    b.Navigation("ShoppingCartItems");
                 });
 
             modelBuilder.Entity("FakeXieCheng.API.Models.TouristRoute", b =>

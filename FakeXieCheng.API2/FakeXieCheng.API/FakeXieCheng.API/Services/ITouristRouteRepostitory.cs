@@ -1,7 +1,6 @@
 ﻿using FakeXieCheng.API.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace FakeXieCheng.API.Services
@@ -20,5 +19,7 @@ namespace FakeXieCheng.API.Services
         void DeleteTouristRoute(TouristRoute touristRoute);
         void DeleteTouristRoutes(IEnumerable<TouristRoute> touristRoutes);
         void DeleteTouristRoutePicture(TouristRoutePicture touristRoutePicture);
+        Task<ShoppingCart> GetShoppingCartByUserId(string userId);
+        Task CreateShoppingCart(ShoppingCart shoppingCart);
     }
 }

@@ -14,6 +14,8 @@
   <ItemGroup>
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\DepartureCity.cs" />
+    <Compile Include="Models\LineItem.cs" />
+    <Compile Include="Models\ShoppingCart.cs" />
     <Compile Include="Models\TouristRoute.cs" />
     <Compile Include="Models\TouristRoutePicture.cs" />
     <Compile Include="Models\TraveDays.cs" />
