@@ -8,13 +8,13 @@ namespace FakeXieCheng.API.Services
 {
     public interface ITouristRouteRepostitory
     {
-        bool Save();
-        IEnumerable<TouristRoute> GetTouristRoutes(string keyword, string operatorType, int ratingValue);
-        TouristRoute GetTouristRoute(Guid touristRouteId);
-        bool TouristRouteExists(Guid touristRouteId);
-        IEnumerable<TouristRoutePicture> GetPicturesByTouristRouteId(Guid touristRouteId);
-        TouristRoutePicture GetPicture(int pictureId);
-        IEnumerable<TouristRoute> GetTouristRoutesByIDList(IEnumerable<Guid> ids);
+        Task<bool> SaveAsync();
+        Task<IEnumerable<TouristRoute>> GetTouristRoutesAsync(string keyword, string operatorType, int ratingValue);
+        Task<TouristRoute> GetTouristRouteAsync(Guid touristRouteId);
+        Task<bool> TouristRouteExistsAsync(Guid touristRouteId);
+        Task<IEnumerable<TouristRoutePicture>> GetPicturesByTouristRouteIdAsync(Guid touristRouteId);
+        Task<TouristRoutePicture> GetPictureAsync(int pictureId);
+        Task<IEnumerable<TouristRoute>> GetTouristRoutesByIDListAsync(IEnumerable<Guid> ids);
         void AddTouristRoute(TouristRoute touristRoute);
         void AddTouristRoutePicture(Guid touristRouteId, TouristRoutePicture touristRoutePicture);
         void DeleteTouristRoute(TouristRoute touristRoute);
