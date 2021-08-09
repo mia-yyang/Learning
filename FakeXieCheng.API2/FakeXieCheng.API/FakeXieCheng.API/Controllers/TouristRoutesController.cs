@@ -20,8 +20,8 @@ namespace FakeXieCheng.API.Controllers
     [ApiController]
     public class TouristRoutesController : ControllerBase
     {
-        private ITouristRouteRepostitory _touristRouteRepostitory;
-        private IMapper _mapper;
+        private readonly ITouristRouteRepostitory _touristRouteRepostitory;
+        private readonly IMapper _mapper;
         public TouristRoutesController(ITouristRouteRepostitory touristRouteRepostitory,
             IMapper mapper)
         {
@@ -46,7 +46,10 @@ namespace FakeXieCheng.API.Controllers
 
         //[HttpGet("{touristRouteId:Guid}")]
         [HttpGet("{touristRouteId}", Name = "GetTouristRouteById")]
-        public async Task<IActionResult> GetTouristRouteById(Guid touristRouteId)
+        public async Task<IActionResult> GetTouristRouteById(
+            Guid touristRouteId,
+            string fields
+        )
         {
             var touristRouteFromRepo = await _touristRouteRepostitory.GetTouristRouteAsync(touristRouteId);
             if (touristRouteFromRepo == null)
@@ -55,7 +58,7 @@ namespace FakeXieCheng.API.Controllers
             }
             var touristRouteDto = _mapper.Map<TouristRouteDto>(touristRouteFromRepo);
 
-            return Ok(touristRouteDto);
+            return Ok(touristRouteDto.ShapeData(fields));
         }
 
         [HttpPost]
