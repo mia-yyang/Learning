@@ -32,7 +32,7 @@ namespace FakeXieCheng.API.Controllers
         [HttpGet]
         [HttpHead]
         public async Task<IActionResult> GetTouristRoutes(
-            [FromForm] TouristRouteResourceParameters parameters
+            [FromQuery] TouristRouteResourceParameters parameters
         )
         {
             var touristRoutesFromRepo = await _touristRouteRepostitory.GetTouristRoutesAsync(parameters.Keyword, parameters.RatingOperator, parameters.RatingValue);
@@ -41,7 +41,7 @@ namespace FakeXieCheng.API.Controllers
                 return NotFound("没有旅游路线");
             }
             var touristRoutesDto = _mapper.Map<IEnumerable<TouristRouteDto>>(touristRoutesFromRepo);
-            return Ok(touristRoutesDto);
+            return Ok(touristRoutesDto.ShapeData(parameters.fields));
         }
 
         //[HttpGet("{touristRouteId:Guid}")]

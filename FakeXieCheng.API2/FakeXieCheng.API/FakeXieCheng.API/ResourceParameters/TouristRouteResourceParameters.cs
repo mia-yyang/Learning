@@ -31,5 +31,7 @@ namespace FakeXieCheng.API.ResourceParameters
                 _rating = value;
             }
         }
+
+        public string fields { get; set; }
     }
 }
