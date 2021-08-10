@@ -35,7 +35,13 @@ namespace FakeXieCheng.API.Controllers
             [FromQuery] TouristRouteResourceParameters parameters
         )
         {
-            var touristRoutesFromRepo = await _touristRouteRepostitory.GetTouristRoutesAsync(parameters.Keyword, parameters.RatingOperator, parameters.RatingValue);
+            var touristRoutesFromRepo = await _touristRouteRepostitory
+                .GetTouristRoutesAsync(
+                    parameters.Keyword,
+                    parameters.RatingOperator,
+                    parameters.RatingValue,
+                    0, 0,
+                    parameters.OrderBy);
             if (touristRoutesFromRepo == null || touristRoutesFromRepo.Count() <= 0)
             {
                 return NotFound("没有旅游路线");

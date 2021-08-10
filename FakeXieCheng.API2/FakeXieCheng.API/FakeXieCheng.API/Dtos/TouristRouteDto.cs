@@ -11,6 +11,7 @@ namespace FakeXieCheng.API.Dtos
         public string Title { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
+        public decimal OriginalPrice { get; set; }
         public double? DiscountPresent { get; set; }
         public DateTime CreateTime { get; set; }
         public DateTime? UpdateTime { get; set; }

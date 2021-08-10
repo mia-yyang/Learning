@@ -24,12 +24,17 @@ namespace FakeXieCheng.API.Services
         public async Task<IEnumerable<TouristRoute>> GetTouristRoutesAsync(
             string keyword,
             string operatorType,
-            int ratingValue
+            int ratingValue,
+            int pageSize,
+            int pageNumber,
+            string orderBy
         )
         {
             // return _context.TouristRoutes;
             // Include vs join
-            IQueryable<TouristRoute> result = _context.TouristRoutes.Include(t => t.TouristRoutePictures);
+            IQueryable<TouristRoute> result = _context
+                .TouristRoutes
+                .Include(t => t.TouristRoutePictures);
             if (!string.IsNullOrWhiteSpace(keyword))
             {
                 keyword = keyword.Trim();
@@ -48,6 +53,14 @@ namespace FakeXieCheng.API.Services
                     case "equalTo":
                         result = result.Where(t => t.Rating == ratingValue);
                         break;
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(orderBy))
+            {
+                // ToLowerInvariant 只处理英语
+                if (orderBy.ToLowerInvariant() == "originalprice")
+                {
+                    result = result.OrderBy(t => t.OriginalPrice);
                 }
             }
 

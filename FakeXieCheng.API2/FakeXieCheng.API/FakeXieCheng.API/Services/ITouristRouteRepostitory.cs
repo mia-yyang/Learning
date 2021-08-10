@@ -8,7 +8,8 @@ namespace FakeXieCheng.API.Services
     public interface ITouristRouteRepostitory
     {
         Task<bool> SaveAsync();
-        Task<IEnumerable<TouristRoute>> GetTouristRoutesAsync(string keyword, string operatorType, int ratingValue);
+        Task<IEnumerable<TouristRoute>> GetTouristRoutesAsync(
+            string keyword, string operatorType, int ratingValue, int pageSize, int pageNumber, string orderBy);
         Task<TouristRoute> GetTouristRouteAsync(Guid touristRouteId);
         Task<bool> TouristRouteExistsAsync(Guid touristRouteId);
         Task<IEnumerable<TouristRoutePicture>> GetPicturesByTouristRouteIdAsync(Guid touristRouteId);
