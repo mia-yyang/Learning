@@ -93,6 +93,8 @@ namespace FakeXieCheng.API
 
             // É¨Ãè profile ÎÄ¼þ
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddTransient<IPropertyMappingService, PropertyMappingService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

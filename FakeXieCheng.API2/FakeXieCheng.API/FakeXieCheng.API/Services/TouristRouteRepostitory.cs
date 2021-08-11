@@ -1,4 +1,6 @@
 ﻿using FakeXieCheng.API.Database;
+using FakeXieCheng.API.Dtos;
+using FakeXieCheng.API.Helper;
 using FakeXieCheng.API.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,9 +13,13 @@ namespace FakeXieCheng.API.Services
     public class TouristRouteRepostitory : ITouristRouteRepostitory
     {
         private readonly AppDbContext _context;
-        public TouristRouteRepostitory(AppDbContext context)
+        private readonly IPropertyMappingService _propertyMappingService;
+        public TouristRouteRepostitory(
+            AppDbContext context,
+            IPropertyMappingService propertyMappingService)
         {
             _context = context;
+            _propertyMappingService = propertyMappingService;
         }
 
         public async Task<bool> SaveAsync()
@@ -57,11 +63,15 @@ namespace FakeXieCheng.API.Services
             }
             if (!string.IsNullOrWhiteSpace(orderBy))
             {
-                // ToLowerInvariant 只处理英语
-                if (orderBy.ToLowerInvariant() == "originalprice")
-                {
-                    result = result.OrderBy(t => t.OriginalPrice);
-                }
+                //// ToLowerInvariant 只处理英语
+                //if (orderBy.ToLowerInvariant() == "originalprice")
+                //{
+                //    result = result.OrderBy(t => t.OriginalPrice);
+                //}
+                var touristMappingDictionary = _propertyMappingService
+                    .GetPropertyMapping<TouristRouteDto, TouristRoute>();
+
+                result = result.ApplySort(orderBy, touristMappingDictionary);
             }
 
             return await result.ToListAsync();// 这里转成 ToList()的作用 IQueryable 马上执行  类似功能的还有FirstOrDefault
