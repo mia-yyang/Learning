@@ -40,7 +40,8 @@ namespace FakeXieCheng.API.Controllers
                     parameters.Keyword,
                     parameters.RatingOperator,
                     parameters.RatingValue,
-                    0, 0,
+                    parameters.PageSize,
+                    parameters.PageNumber,
                     parameters.OrderBy);
             if (touristRoutesFromRepo == null || touristRoutesFromRepo.Count() <= 0)
             {
