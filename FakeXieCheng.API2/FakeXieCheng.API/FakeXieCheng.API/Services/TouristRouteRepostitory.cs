@@ -27,7 +27,7 @@ namespace FakeXieCheng.API.Services
             return (await _context.SaveChangesAsync() >= 0);
         }
 
-        public async Task<IEnumerable<TouristRoute>> GetTouristRoutesAsync(
+        public async Task<PaginationList<TouristRoute>> GetTouristRoutesAsync(
             string keyword,
             string operatorType,
             int ratingValue,
@@ -74,14 +74,16 @@ namespace FakeXieCheng.API.Services
                 result = result.ApplySort(orderBy, touristMappingDictionary);
             }
 
-            // pagination
-            // skip
-            var skip = (pageNumber - 1) * pageSize;
-            result = result.Skip(skip);
-            // 以pagesize为标准显示一定量的数据
-            result = result.Take(pageSize);
+            //// pagination
+            //// skip
+            //var skip = (pageNumber - 1) * pageSize;
+            //result = result.Skip(skip);
+            //// 以pagesize为标准显示一定量的数据
+            //result = result.Take(pageSize);
 
-            return await result.ToListAsync();// 这里转成 ToList()的作用 IQueryable 马上执行  类似功能的还有FirstOrDefault
+            //return await result.ToListAsync();// 这里转成 ToList()的作用 IQueryable 马上执行  类似功能的还有FirstOrDefault
+
+            return await PaginationList<TouristRoute>.CreateAsync(pageNumber, pageSize, result);
         }
 
         public async Task<TouristRoute> GetTouristRouteAsync(Guid touristRouteId)

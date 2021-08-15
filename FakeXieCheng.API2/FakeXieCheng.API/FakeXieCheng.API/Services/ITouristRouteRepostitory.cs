@@ -1,4 +1,5 @@
-﻿using FakeXieCheng.API.Models;
+﻿using FakeXieCheng.API.Helper;
+using FakeXieCheng.API.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace FakeXieCheng.API.Services
     public interface ITouristRouteRepostitory
     {
         Task<bool> SaveAsync();
-        Task<IEnumerable<TouristRoute>> GetTouristRoutesAsync(
+        Task<PaginationList<TouristRoute>> GetTouristRoutesAsync(
             string keyword, string operatorType, int ratingValue, int pageSize, int pageNumber, string orderBy);
         Task<TouristRoute> GetTouristRouteAsync(Guid touristRouteId);
         Task<bool> TouristRouteExistsAsync(Guid touristRouteId);
